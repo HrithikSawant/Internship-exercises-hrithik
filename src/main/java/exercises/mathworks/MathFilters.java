@@ -1,6 +1,9 @@
 package exercises.mathworks;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -10,6 +13,38 @@ enum PredicateChainType {
 }
 
 public class MathFilters {
+
+    private static HashMap<String, Predicate<Integer>> preferences;
+    private static HashMap<String, BiPredicate<String,Predicate<Integer>>> preferences1;
+
+    MathFilters() {
+        preferences1 = new HashMap<>();
+        preferences = new HashMap<>();
+        preferences.put("even",even());
+        preferences.put("odd",odd());
+        preferences.put("prime",prime());
+    }
+
+
+    public static Predicate<Integer> even() {
+        return number -> (number & 1) == 0;
+    }
+
+    public static Predicate<Integer> odd() {
+        return even().negate();
+    }
+
+    public static Predicate<Integer> prime() {
+        return number -> {
+            if (number <= 1) { return false;}
+            int count = 2;
+            while (count * count <= number) {
+                if (number % count == 0) {return false;}
+                count++;
+            }
+            return true;
+        };
+    }
 
     public static List<Integer> filter(List<Integer> list, Predicate<Integer> predicate) {
         return list.stream().filter(predicate).collect(Collectors.toList());
@@ -42,9 +77,4 @@ public class MathFilters {
         }
         return predicate;
     }
-
-
-
-
-
 }

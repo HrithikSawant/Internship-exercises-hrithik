@@ -12,6 +12,12 @@ import static org.hamcrest.core.Is.is;
 
 public class MathFiltersTest  {
 
+
+
+    public static void main(String[] args) {
+        MathFilters mathFilters = new MathFilters();
+    }
+
     public static Predicate<Integer> even() {
         return number -> (number & 1) == 0;
     }
@@ -32,15 +38,15 @@ public class MathFiltersTest  {
         };
     }
 
-    private static Predicate<Integer> getMultipleOf(int multiple) {
+    public static Predicate<Integer> getMultipleOf(int multiple) {
         return number -> number % multiple == 0;
     }
 
-    private static Predicate<Integer> greaterThan(int greater) {
+    public static Predicate<Integer> greaterThan(int greater) {
         return number -> number > greater;
     }
 
-    private static Predicate<Integer> lessThan(int lessThan) {
+    public static Predicate<Integer> lessThan(int lessThan) {
         return number -> number < lessThan;
     }
 
@@ -76,12 +82,16 @@ public class MathFiltersTest  {
         Assert.assertThat(actual, is(oddNumbers));
     }
 
+
     @Test
     public void testGetPrimeNumbers() {
+
+        MyFilters engine = new MyFilters();
         List<Integer> numbers = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19));
         List<Integer> primeNumbers = new ArrayList<>(Arrays.asList(2,3,5,7,11,13,17,19));
 
-        List<Integer> actual = MathFilters.filter(numbers,prime());
+//        List<Integer> actual = MathFilters.filter(numbers,prime());
+        List<Integer> actual = engine.filter(numbers,engine.getPreferences().get("prime"));
 
         Assert.assertThat(actual, is(primeNumbers));
     }

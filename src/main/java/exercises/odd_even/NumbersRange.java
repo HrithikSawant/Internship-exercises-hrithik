@@ -23,20 +23,11 @@ public class NumbersRange {
                 .collect(Collectors.toList());
     }
     private static String oddOrEvenOrPrime(int number) {
-        if (isPrime(number)) {
-            return String.valueOf(number);
-        }
-        if (isOdd(number)) {
-            return("Odd");
-        } else {
-            return("Even");
-        }
+        return isPrime(number) ? String.valueOf(number) : isOdd(number) ? ("Odd") : ("Even");
     }
 
     public static boolean isPrime(int number) {
-        if (number <= 1) {
-            return false; //"Nor Prime Neither Composite";
-        }
+        if (number <= 1) return false; //"Nor Prime Neither Composite";
         int count = 2;
         while (count * count <= number) {
             if (number % count == 0) {
