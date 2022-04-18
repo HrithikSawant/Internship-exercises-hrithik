@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 
 public class Grep {
 
-    public List<String> searchInFile(String searchWord, Path path) {
-        try (Stream<String> file = Files.lines(path)) {
+    public List<String> searchInFile(String searchWord, Path filename) {
+        try (Stream<String> file = Files.lines(filename)) {
             return search(searchWord, file.toList());//, searchOptions
         } catch (Exception e) {
             System.err.print(e);
@@ -63,6 +63,4 @@ public class Grep {
                 .filter(s -> s.contains(searchWord))
                 .collect(Collectors.toList());
     }
-
-
 }
