@@ -41,7 +41,7 @@ public class Grep implements ReadService, OutputService {
             e.printStackTrace();
         }
 
-        
+
     }
 
     @Override
