@@ -32,13 +32,13 @@ public class GrepTest {
     @Test
     public void printResultToStdout() {
         List<String> actual = getStrings();
-        grep.printResultToStdout(actual);
+        grep.writeToStdOut(actual);
     }
 
     @Test
     public void printResultToFile() {
         List<String> actual = getStrings();
-        grep.printResultToFile(actual, Path.of(filePath + "B/output.txt"));
+        grep.writeToFile(actual, Path.of(filePath + "B/output.txt"));
         List<String> expected = new ArrayList<>(List.of("During the first part of your life, you only become aware of happiness once you have lost it."));
         assertThat(actual, is(expected));
     }
@@ -49,7 +49,7 @@ public class GrepTest {
         List<String> expected = new ArrayList<>(Arrays.asList("applesauce.", "applejacks.", "applecarts.", "appledrain.", "appleshare.",
                 "appleworks.", "appletiser.", "applecross"));
         List<String> result = grep.searchInSubstring(search, expected);
-        grep.printResultToStdout(result);
+        grep.writeToStdOut(result);
     }
 
     @Test

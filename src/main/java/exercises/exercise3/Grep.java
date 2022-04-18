@@ -31,7 +31,7 @@ public class Grep {
                         List<String> result = searchInFile(searchWord, w);
                         if (!result.isEmpty()) {
                             System.out.print(w + " : ");
-                            printResultToStdout(result);
+                            writeToStdOut(result);
                         }
                     });
         } catch (IOException e) {
@@ -39,11 +39,11 @@ public class Grep {
         }
     }
 
-    public void printResultToStdout(List<String> result) {
+    public void writeToStdOut(List<String> result) {
         result.forEach(System.out::println);
     }
 
-    public void printResultToFile(List<String> result, Path filename) {
+    public void writeToFile(List<String> result, Path filename) {
         try (OutputStream out = new FileOutputStream(filename.toFile());
              Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
             result.forEach(str -> {
