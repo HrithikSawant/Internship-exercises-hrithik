@@ -40,6 +40,8 @@ public class Grep implements ReadService, OutputService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        
     }
 
     @Override
