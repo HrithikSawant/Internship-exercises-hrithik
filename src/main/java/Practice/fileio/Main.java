@@ -1,4 +1,4 @@
-package fileio;
+package Practice.fileio;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        //note /src will consider for user.dir
-        find10LongestWords("src/main/java/fileio/lorem.txt");
-        wordsEachLength("src/main/java/fileio/lorem.txt");
+//        //note /src will consider for user.dir
+//        find10LongestWords("src/main/java/Practice.fileio/lorem.txt");
+//        wordsEachLength("src/main/java/Practice.fileio/lorem.txt");
         fileList("src/main/");
 
     }

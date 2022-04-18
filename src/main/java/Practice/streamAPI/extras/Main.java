@@ -1,4 +1,4 @@
-package streamAPI.extras;
+package Practice.streamAPI.extras;
 
 import java.util.Arrays;
 import java.util.List;

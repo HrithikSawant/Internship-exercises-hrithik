@@ -1,4 +1,4 @@
-package streamAPI.chapter5;
+package Practice.streamAPI.chapter5;
 
 import java.util.*;
 import java.util.stream.Collectors;

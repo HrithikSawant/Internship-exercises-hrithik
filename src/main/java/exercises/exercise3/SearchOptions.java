@@ -1,22 +1,9 @@
 package exercises.exercise3;
 
-import java.util.Objects;
-
 public class SearchOptions {
 
     protected boolean countOnly ;
     protected boolean ignoreCase;
-
-
-    protected boolean recursive = false;
-
-    public boolean isRecursive() {
-        return recursive;
-    }
-
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
-    }
 
 
     public boolean isCountOnly() {

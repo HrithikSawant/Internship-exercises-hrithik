@@ -1,4 +1,4 @@
-package streamAPI.chapter5;
+package Practice.streamAPI.chapter5;
 
 public class Trader{
 

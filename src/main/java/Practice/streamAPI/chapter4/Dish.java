@@ -1,4 +1,4 @@
-package streamAPI.chapter4;
+package Practice.streamAPI.chapter4;
 
 public class Dish {
     private final String name;

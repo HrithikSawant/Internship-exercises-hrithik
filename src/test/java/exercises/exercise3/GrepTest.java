@@ -2,6 +2,7 @@ package exercises.exercise3;
 
 import org.junit.Test;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,20 +14,18 @@ public class GrepTest {
 
     Grep grep = new Grep();
 
-    String search = "apple";
-    String filePath = "src/main/java/fileio/";
+    String filePath = "src/test/java/resources/";
+
 
     private List<String> getStrings() {
-        SearchOptions s = new SearchOptions();
-        return grep.searchInFile(search,filePath+"lorem.txt");
+        String search = "you";
+        return grep.searchInFile(search, Path.of(filePath + "A/lorem.txt"));
     }
 
     @Test
     public void searchInFile() {
         List<String> actual = getStrings();
-        List<String> expected = new ArrayList<>(Arrays.asList("apple",
-                "applecart", "applecarts", "applejackle", "applejacks",
-                "apples", "applesauce", "applesauces", "gRapple", "pinEapples"));
+        List<String> expected = new ArrayList<>(List.of("During the first part of your life, you only become aware of happiness once you have lost it."));
         assertThat(actual, is(expected));
     }
 
@@ -39,14 +38,25 @@ public class GrepTest {
     @Test
     public void printResultToFile() {
         List<String> actual = getStrings();
-        grep.printResultToFile(actual,filePath+"output.txt");
+        grep.printResultToFile(actual, Path.of(filePath + "B/output.txt"));
+        List<String> expected = new ArrayList<>(List.of("During the first part of your life, you only become aware of happiness once you have lost it."));
+        assertThat(actual, is(expected));
     }
 
     @Test
     public void searchInSubstring() {
+        String search = "apple";
         List<String> expected = new ArrayList<>(Arrays.asList("applesauce.", "applejacks.", "applecarts.", "appledrain.", "appleshare.",
                 "appleworks.", "appletiser.", "applecross"));
-        List<String> result = grep.searchInSubstring(search,expected);
+        List<String> result = grep.searchInSubstring(search, expected);
         grep.printResultToStdout(result);
     }
+
+    @Test
+    public void recursiveSearch() {
+        String path = "src/test/java/resources/";
+        grep.recursiveSearch("you", Path.of(path));
+    }
+
+
 }
