@@ -5,10 +5,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+
+
 
 class OddCommand implements Command {
     @Override
@@ -55,13 +58,16 @@ class MultipleOfX implements Command {
 
 public class MathFiltersTest {
 
+    MyFilterEngine engine = new MyFilterEngine();
+
     @Test
     public void testGetEvenNumbers() {
+
         List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
         List<Integer> evenNumbers = new ArrayList<>(Arrays.asList(2, 4, 6, 8, 10, 12));
         List<Command> command = new ArrayList<>(List.of(new EvenCommand()));
 
-        List<Integer> actual = MyFilterEngine.filterWithAllMatches(numbers, command);
+        List<Integer> actual = engine.filterWithAllMatches(numbers, command);
 
         assertThat(actual, is(evenNumbers));
     }
@@ -72,7 +78,7 @@ public class MathFiltersTest {
         List<Integer> oddNumbers = new ArrayList<>(Arrays.asList(1, 3, 5, 7, 9, 11, 13));
         List<Command> command = new ArrayList<>(List.of(new OddCommand()));
 
-        List<Integer> actual = MyFilterEngine.filterWithAllMatches(numbers, command);
+        List<Integer> actual = engine.filterWithAllMatches(numbers, command);
 
         assertThat(actual, is(oddNumbers));
     }
@@ -84,7 +90,7 @@ public class MathFiltersTest {
         List<Integer> primeNumbers = new ArrayList<>(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19));
         List<Command> command = new ArrayList<>(List.of(new PrimeCommand()));
 
-        List<Integer> actual = MyFilterEngine.filterWithAllMatches(numbers, command);
+        List<Integer> actual = engine.filterWithAllMatches(numbers, command);
 
         assertThat(actual, is(primeNumbers));
 
@@ -96,7 +102,7 @@ public class MathFiltersTest {
         List<Integer> oddPrimeNumbers = new ArrayList<>(Arrays.asList(3, 5, 7, 11, 13, 17, 19));
         List<Command> command = new ArrayList<>(List.of(new OddCommand(), new PrimeCommand()));
 
-        List<Integer> actual = MyFilterEngine.filterWithAllMatches(numbers, command);
+        List<Integer> actual = engine.filterWithAllMatches(numbers, command);
 
         assertThat(actual, is(oddPrimeNumbers));
     }
@@ -108,7 +114,7 @@ public class MathFiltersTest {
         List<Integer> expected = new ArrayList<>(Arrays.asList(10, 20));
         List<Command> command = new ArrayList<>(List.of(new EvenCommand(), new MultipleOfX(10)));
 
-        List<Integer> actual = MyFilterEngine.filterWithAllMatches(numbers, command);
+        List<Integer> actual = engine.filterWithAllMatches(numbers, command);
 
         assertThat(actual, is(expected));
     }
@@ -120,7 +126,7 @@ public class MathFiltersTest {
         List<Integer> expected = new ArrayList<>(List.of(15));
         List<Command> command = new ArrayList<>(List.of(new OddCommand(), new MultipleOfX(3), new GreaterThanX(10)));
 
-        List<Integer> actual = MyFilterEngine.filterWithAllMatches(numbers, command);
+        List<Integer> actual = engine.filterWithAllMatches(numbers, command);
 
         assertThat(actual, is(expected));
     }
@@ -134,10 +140,10 @@ public class MathFiltersTest {
         List<Integer> expected_withAll_1 = new ArrayList<>(List.of(6, 12));
 
         List<Command> commands1 = new ArrayList<>(List.of(new OddCommand(), new GreaterThanX(5), new MultipleOfX(3)));
-        List<Integer> actualTest1 = MyFilterEngine.filterWithAllMatches(numbers, commands1);
+        List<Integer> actualTest1 = engine.filterWithAllMatches(numbers, commands1);
 
         List<Command> commands2 = new ArrayList<>(List.of(new EvenCommand(), new LessThanX(15), new MultipleOfX(3)));
-        List<Integer> actualTest2 = MyFilterEngine.filterWithAllMatches(numbers, commands2);
+        List<Integer> actualTest2 = engine.filterWithAllMatches(numbers, commands2);
 
         assertThat(actualTest1, is(expected_withAll));
         assertThat(actualTest2, is(expected_withAll_1));
@@ -152,12 +158,53 @@ public class MathFiltersTest {
 
         List<Command> commands1 = new ArrayList<>(List.of(new PrimeCommand(), new GreaterThanX(15),
                 new MultipleOfX(5)));
-        List<Integer> actualTest1 = MyFilterEngine.filterWithAnyMatches(numbers, commands1);
+        List<Integer> actualTest1 = engine.filterWithAnyMatches(numbers, commands1);
         List<Command> commands2 = new ArrayList<>(List.of(new LessThanX(6), new MultipleOfX(3)));
-        List<Integer> actualTest2 = MyFilterEngine.filterWithAnyMatches(numbers, commands2);
+        List<Integer> actualTest2 = engine.filterWithAnyMatches(numbers, commands2);
 
         assertThat(actualTest1, is(expected_withAny));
         assertThat(actualTest2, is(expected_withAny_1));
     }
+
+    @Test
+    public void testAllForPredicates() {
+
+        Predicate<Integer> even = x -> x % 2 == 0;
+        Predicate<Integer> lessThan17 = x -> x < 17 ;
+        Predicate<Integer> greaterThan5 = x -> x > 5 ;
+
+        List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                11, 12, 13, 14, 15, 16, 17, 18, 19, 20));
+        List<Integer> expected_withAny = new ArrayList<>(List.of(6, 8, 10, 12, 14, 16));
+
+        List<Predicate<Integer>> commands =
+                new ArrayList<>(List.of(even,greaterThan5, lessThan17));
+
+        Predicate<Integer> allMatchConstruct = engine.allMatchConstruct(commands);
+        List<Integer> actualTest1 = engine.filter(numbers,allMatchConstruct);
+
+        assertThat(actualTest1, is(expected_withAny));
+    }
+
+    @Test
+    public void testAnyForPredicates() {
+
+        Predicate<Integer> multipleOf3 = x -> x % 3 == 0;
+        Predicate<Integer> lessThan6 = x -> x < 6 ;
+
+        List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                11, 12, 13, 14, 15, 16, 17, 18, 19, 20));
+        List<Integer> expected_withAny = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 9, 12, 15, 18));
+
+        List<Predicate<Integer>> commands =
+                new ArrayList<>(List.of(lessThan6, multipleOf3));
+
+        Predicate<Integer> anyMatchConstruct = engine.anyMatchConstruct(commands);
+        List<Integer> actualTest = engine.filter(numbers,anyMatchConstruct);
+
+        assertThat(actualTest, is(expected_withAny));
+    }
+
+
 
 }
