@@ -1,0 +1,3 @@
+Friendship teaches us about loyalty and trust.
+This is first testFile
+This is second testFile

@@ -1,0 +1,4 @@
+This is a test file
+one can test file using testCases
+Friendship teaches us about loyalty and trust from childhood.
+welcome to the java Programming
