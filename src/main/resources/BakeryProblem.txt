@@ -1,0 +1,55 @@
+A small bakery owner with 3 stores would like to implement a Point-of-Sales (POS) system to track sales & inventory of the business. Every day, there are a limited number of cakes being produced for each store. Design a relational database design to help the bakery owner implement the POS. List down the required tables and columns along with their data types.
+
+You may assume that cakes have some types (ex. Chocolate, Pineapple, Truffle etc) and sizes (0.5kg, 1kg, 2kg etc)
+
+Based on your relational design, the store owner should be able to answer questions like following. You have to write SQL statements for answering these questions.
+ 1. Find the total revenue from all stores for a given month.
+ 2. Find revenue per month per branch ordered by branch with maximum revenue at the top.
+ 3. Find the best selling cake per branch in a given month. Best selling is calculated based on number of units sold.
+
+
+
+product
+product_id            int Primary Key
+product_name          varchar(30),
+product_type          varchar(30),
+product_size          varchar(20),
+product_price         bigint,
+qty_stock             integer,
+product_manufacture   Date
+product_expiry        Date
+
+Order_Product
+order_productId      int Primary Key
+order_id             int REFERENCES order_id (id)
+product_id           int REFERENCES product_id (id)
+qty                  integer
+price for each       BigInt  REFERENCES product_price (id)
+total price          BigInt
+
+Order
+order_Id             int  Primary Key
+cust_id              int REFERENCES cust_idy (id)
+purchase_Date        date
+
+customer
+cust_id              int Primary Key
+     //Branch_Id     int REFERENCES cust_idy (id)
+first_name           varchar(30)
+lastname             varchar(30)
+middle_name          varchar(30)
+phone_no             varchar(30)
+address              varchar(255)
+
+
+Branch
+branch_id           int Primary Key
+name                varchar(30)
+location/address    varchar(255)
+
+
+
+
+
+
+
