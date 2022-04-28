@@ -1,0 +1,209 @@
+
+CREATE TABLE Users (
+  id INT PRIMARY KEY NOT NULL,
+  name varchar(30) NOT NULL,
+  gender varchar(6) NOT NULL,
+  dob Date NOT NULL,
+  mobile_number varchar(10) NOT NULL,
+  otp int NOT NULL,
+  otp_expires_at TimeStamp,
+  created_at TimeStamp NOT NULL,
+  updated_at TimeStamp NOT NULL
+);
+
+CREATE TABLE ROLES (
+  id INT PRIMARY KEY NOT NULL,
+  type VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE USER_ROLE (
+  user_id INT REFERENCES users(id),
+  role_id INT REFERENCES roles(id)
+);
+
+CREATE TABLE RECEPTIONIST (
+  id INT PRIMARY KEY NOT NULL,
+  user_id INT REFERENCES users(id)
+);
+
+CREATE TABLE PATIENT (
+  id INT PRIMARY KEY NOT NULL,
+  user_id INT NOT NULL,
+  name varchar(30) NOT NULL,
+  gender varchar(6) NOT NULL,
+  dob Date NOT NULL,
+  mobile_number varchar(10) NOT NULL,
+  address varchar(255) NOT NULL,
+  created_at TimeStamp NOT NULL,
+  updated_at TimeStamp
+);
+
+
+CREATE TABLE DOCTORS (
+  id INT PRIMARY KEY NOT NULL,
+  user_id INT REFERENCES Users(id),
+  procurement_year Date NOT NULL
+);
+
+
+CREATE TABLE SPECIALIZATION (
+  id INT PRIMARY KEY NOT NULL,
+  name varchar(50) NOT NULL,
+  description varchar(255) NOT NULL
+);
+
+CREATE TABLE DOCTOR_SPECIALIZATION (
+  id INT PRIMARY KEY NOT NULL,
+  specialization_id INT REFERENCES specialization(id),
+  doctor_id INT REFERENCES doctors(id)
+);
+
+CREATE TABLE REASON (
+  id INT PRIMARY KEY NOT NULL,
+  reason varchar(70) NOT NULL
+);
+
+CREATE TABLE CANCELED (
+  id INT PRIMARY KEY NOT NULL,
+  reason varchar(70) NOT NULL
+);
+
+CREATE TABLE APPOINTMENT_STATUS (
+  id INT PRIMARY KEY NOT NULL,
+  type VARCHAR(9) NOT NULL
+);
+
+
+CREATE TABLE WEEKDAYS (
+  id INT PRIMARY KEY NOT NULL,
+  day VARCHAR(9) NOT NULL
+);
+
+INSERT INTO weekdays VALUES (1,'Monday');
+INSERT INTO weekdays VALUES (2,'Tuesday');
+INSERT INTO weekdays VALUES (3,'Wednesday');
+INSERT INTO weekdays VALUES (4,'Thursday');
+INSERT INTO weekdays VALUES (5,'Friday');
+INSERT INTO weekdays VALUES (6,'Saturday');
+INSERT INTO weekdays VALUES (7,'Sunday');
+
+
+shifts_schedule
+
+CREATE TABLE SHIFT_SCHEDULE (
+  id INT PRIMARY KEY NOT NULL,
+  doctor_id  INT REFERENCES doctors(id),
+  start_time TIME,
+  end_time TIME,
+  day_id INT REFERENCES weekdays(id)
+);
+
+
+
+  
+CREATE TABLE APPOINTMENTS (
+  id INT PRIMARY KEY NOT NULL,
+  patient_id  INT REFERENCES patient(id),
+  doctor_id  INT REFERENCES doctors(id),
+  appointment_reason INT REFERENCES reason(id),
+  reporting_time TIME,
+  status_id INT REFERENCES appointment_status(id),
+  isCancel boolean NOT NULL,
+  cancel_id INT REFERENCES canceled(id),
+  requested_at TIMESTAMP ,
+  updated_at TIME
+);
+
+CREATE TABLE CONSULTATION (
+  id INT PRIMARY KEY NOT NULL,
+  appointment_id INT REFERENCES appointments(id),
+  patient_id INT REFERENCES patient(id),
+  doctor_id INT REFERENCES doctors(id),
+  in_time TIME,
+  out_time TIME
+);
+
+
+
+DOCTORS---------------------------------------
+
+INSERT INTO doctors VALUES (1,9,'12/3/1983');
+INSERT INTO doctors VALUES (2,10,'03/4/1974');
+INSERT INTO doctors VALUES (3,11,'14/4/1978');
+INSERT INTO doctors VALUES (4,12,'09/3/1988);
+INSERT INTO doctors VALUES (5,13,'16/3/1985');
+INSERT INTO doctors VALUES (6,14,'13/3/1994');
+
+
+
+SHIFTS-------------------------------------------------
+
+INSERT INTO shift_schedule VALUES (1,1,'09:00:00','13:00:00',1);
+INSERT INTO shift_schedule VALUES (2,1,'13:00:00','17:00:00',1);
+INSERT INTO shift_schedule VALUES (3,1,'09:00:00','13:00:00',2);
+INSERT INTO shift_schedule VALUES (4,1,'13:00:00','17:00:00',2);
+INSERT INTO shift_schedule VALUES (5,1,'09:00:00','13:00:00',3);
+INSERT INTO shift_schedule VALUES (6,1,'09:00:00','13:00:00',4);
+INSERT INTO shift_schedule VALUES (7,1,'09:00:00','13:00:00',5);
+INSERT INTO shift_schedule VALUES (8,1,'13:00:00','17:00:00',5);
+INSERT INTO shift_schedule VALUES (9,1,'09:00:00','13:00:00',6);
+INSERT INTO shift_schedule VALUES (10,1,'13:00:00','17:00:00',7);
+INSERT INTO shift_schedule VALUES (11,2,'09:00:00','13:00:00',1);
+INSERT INTO shift_schedule VALUES (12,2,'13:00:00','17:00:00',1);
+INSERT INTO shift_schedule VALUES (13,2,'09:00:00','13:00:00',2);
+INSERT INTO shift_schedule VALUES (14,2,'13:00:00','17:00:00',2);
+INSERT INTO shift_schedule VALUES (15,2,'09:00:00','13:00:00',3);
+INSERT INTO shift_schedule VALUES (16,2,'09:00:00','13:00:00',4);
+INSERT INTO shift_schedule VALUES (17,2,'09:00:00','13:00:00',5);
+INSERT INTO shift_schedule VALUES (18,2,'13:00:00','17:00:00',5);
+INSERT INTO shift_schedule VALUES (19,2,'09:00:00','13:00:00',6);
+INSERT INTO shift_schedule VALUES (20,2,'13:00:00','17:00:00',7);
+INSERT INTO shift_schedule VALUES (21,3,'09:00:00','13:00:00',1);
+INSERT INTO shift_schedule VALUES (22,3,'09:00:00','13:00:00',2); 
+INSERT INTO shift_schedule VALUES (23,3,'13:00:00','17:00:00',2);
+INSERT INTO shift_schedule VALUES (24,3,'13:00:00','17:00:00',3);
+INSERT INTO shift_schedule VALUES (25,3,'09:00:00','13:00:00',4);
+INSERT INTO shift_schedule VALUES (26,3,'13:00:00','17:00:00',4);
+INSERT INTO shift_schedule VALUES (27,3,'09:00:00','13:00:00',5);
+INSERT INTO shift_schedule VALUES (28,3,'09:00:00','13:00:00',6);
+INSERT INTO shift_schedule VALUES (29,3,'13:00:00','17:00:00',6);
+INSERT INTO shift_schedule VALUES (30,3,'13:00:00','17:00:00',7);
+INSERT INTO shift_schedule VALUES (31,4,'09:00:00','13:00:00',1);
+INSERT INTO shift_schedule VALUES (32,4,'09:00:00','13:00:00',2); 
+INSERT INTO shift_schedule VALUES (33,4,'13:00:00','17:00:00',2);
+INSERT INTO shift_schedule VALUES (34,4,'13:00:00','17:00:00',3);
+INSERT INTO shift_schedule VALUES (35,4,'09:00:00','13:00:00',4);
+INSERT INTO shift_schedule VALUES (36,4,'13:00:00','17:00:00',4);
+INSERT INTO shift_schedule VALUES (37,4,'09:00:00','13:00:00',5);
+INSERT INTO shift_schedule VALUES (38,4,'09:00:00','13:00:00',6);
+INSERT INTO shift_schedule VALUES (39,4,'13:00:00','17:00:00',6);
+INSERT INTO shift_schedule VALUES (40,4,'13:00:00','17:00:00',7);
+INSERT INTO shift_schedule VALUES (41,5,'09:00:00','13:00:00',1);
+INSERT INTO shift_schedule VALUES (42,5,'13:00:00','17:00:00',1);
+INSERT INTO shift_schedule VALUES (43,5,'09:00:00','13:00:00',2);
+INSERT INTO shift_schedule VALUES (44,5,'13:00:00','17:00:00',2);
+INSERT INTO shift_schedule VALUES (45,5,'09:00:00','13:00:00',3);
+INSERT INTO shift_schedule VALUES (46,5,'09:00:00','13:00:00',4);
+INSERT INTO shift_schedule VALUES (47,5,'09:00:00','13:00:00',5);
+INSERT INTO shift_schedule VALUES (48,5,'13:00:00','17:00:00',5);
+INSERT INTO shift_schedule VALUES (49,5,'09:00:00','13:00:00',6);
+INSERT INTO shift_schedule VALUES (40,5,'13:00:00','17:00:00',7);
+INSERT INTO shift_schedule VALUES (51,6,'09:00:00','13:00:00',1);
+INSERT INTO shift_schedule VALUES (52,6,'09:00:00','13:00:00',2); 
+INSERT INTO shift_schedule VALUES (53,6,'13:00:00','17:00:00',2);
+INSERT INTO shift_schedule VALUES (54,6,'13:00:00','17:00:00',3);
+INSERT INTO shift_schedule VALUES (55,6,'09:00:00','13:00:00',4);
+INSERT INTO shift_schedule VALUES (56,6,'13:00:00','17:00:00',4);
+INSERT INTO shift_schedule VALUES (57,6,'09:00:00','13:00:00',5);
+INSERT INTO shift_schedule VALUES (58,6,'09:00:00','13:00:00',6);
+INSERT INTO shift_schedule VALUES (59,6,'13:00:00','17:00:00',6);
+INSERT INTO shift_schedule VALUES (60,6,'13:00:00','17:00:00',7);
+
+
+
+
+
+
+
+
+
