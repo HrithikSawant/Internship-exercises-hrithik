@@ -1,3 +1,6 @@
+Create Database HOSPITAL;
+
+
 
 CREATE TABLE Users (
   id INT PRIMARY KEY NOT NULL,
